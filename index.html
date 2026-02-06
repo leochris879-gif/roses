@@ -15,7 +15,6 @@
       --yes: #ffcc00; 
       --yesHover: #e6b800;
       --text: #5c4d00;
-      /* Success Colors */
       --successBg1: #fff8e1;
       --successBg2: #fffde7;
     }
@@ -31,7 +30,7 @@
       font-family: system-ui, sans-serif;
       overflow: hidden;
       padding: 16px;
-      transition: background 2s ease; /* Smooth transition */
+      transition: background 2s ease;
     }
 
     body.celebrate {
@@ -125,6 +124,7 @@
       color: #b38f00;
       line-height: 1.3;
       font-weight: 800;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
     @keyframes pop {
@@ -154,7 +154,7 @@
         <path d="M190 144 C186 144 182 148 182 152 C182 160 190 164 190 170 C190 164 198 160 198 152 C198 148 194 144 190 144Z" fill="#ffcc00"/>
       </svg>
 
-      <h1>Hey Gorgeous Can U Open This for Me Please😘💝?</h1> 
+      <h1>Hey Gorgeous Can U Open This For Me 😘💝?</h1> 
 
       <section class="button-zone" id="zone">
         <button id="yesBtn">Yes</button>
@@ -164,7 +164,7 @@
     </div>
 
     <section id="result">
-      <div class="result-text">Happy Rose Day <br>my sweetheart! 🌹</div>
+      <div class="result-text">Happy Rose Day <br>My Sweetheart! 🌹</div>
     </section>
   </main>
 
@@ -180,33 +180,51 @@
     const roseEmoji = confetti.shapeFromText({ text: '🌹' });
 
     function yellowRoseRain() {
-      // Changed end time to 30,000 milliseconds (30 seconds)
-      const end = Date.now() + 30000; 
+      const duration = 30 * 1000;
+      const animationEnd = Date.now() + duration;
 
       (function frame() {
-        // Falling from left
+        const timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) return;
+
+        // Roses from Left & Right
         confettiInstance({
-          particleCount: 2,
+          particleCount: 3,
           angle: 60,
-          spread: 60,
-          origin: { x: 0, y: Math.random() * 0.4 },
+          spread: 80,
+          origin: { x: 0, y: Math.random() },
           shapes: [roseEmoji],
           scalar: 2
         });
-        // Falling from right
         confettiInstance({
-          particleCount: 2,
+          particleCount: 3,
           angle: 120,
-          spread: 60,
-          origin: { x: 1, y: Math.random() * 0.4 },
+          spread: 80,
+          origin: { x: 1, y: Math.random() },
           shapes: [roseEmoji],
           scalar: 2
         });
 
-        // Request next frame if time hasn't run out
-        if (Date.now() < end) {
-          requestAnimationFrame(frame);
-        }
+        // Roses from Top & Bottom (filling the front/back perspective)
+        confettiInstance({
+          particleCount: 2,
+          angle: 270, // Downward
+          spread: 100,
+          origin: { x: Math.random(), y: 0 },
+          shapes: [roseEmoji],
+          scalar: 2
+        });
+        confettiInstance({
+          particleCount: 2,
+          angle: 90, // Upward
+          spread: 100,
+          origin: { x: Math.random(), y: 1 },
+          shapes: [roseEmoji],
+          scalar: 2
+        });
+
+        requestAnimationFrame(frame);
       })();
     }
 
